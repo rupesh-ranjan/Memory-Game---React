@@ -1,16 +1,56 @@
-# React + Vite
+# 🧠 Memory Game (React)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple and interactive **Memory Card Game** built using **React functional components and hooks**.  
+The game dynamically adapts to different board sizes and supports both even and odd-sized boards.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌐 Live Demo
 
-## React Compiler
+👉 **Website:** https://memory-game-react-lac.vercel.app/
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🚀 Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 🎯 Dynamic **N × N board size** (min: 2, max: 10)
+- 🃏 Automatically generated **paired cards**
+- 🟦 Supports **odd-sized boards** with a center empty card
+- ✅ Matching logic for card pairs
+- 🏆 Win detection when all cards are solved
+- 🔄 Reset & replay functionality
+- ⚛️ Built using modern React best practices
+
+---
+
+## 🧩 How the Game Works
+
+1. Select a board size (between 2 and 10).
+2. Cards are shuffled and placed on the board.
+3. Click a card to flip it.
+4. Flip another card:
+   - If the values match → cards stay open.
+   - If not → the previously flipped card is replaced.
+5. If the total number of cells is odd, a **non-clickable empty card** is placed at the center.
+6. The game is won when all cards are matched.
+
+---
+
+## 🛠 Tech Stack
+
+- React
+- JavaScript (ES6+)
+- Tailwind CSS
+
+---
+
+## ▶️ Getting Started
+
+Follow these steps to run the project locally:
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/rupesh-ranjan/Memory-Game---React.git
+cd Memory-Game---React
+npm install
+npm run dev
