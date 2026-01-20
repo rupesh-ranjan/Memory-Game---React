@@ -1,7 +1,8 @@
 import "./App.css";
+import MemoryGame from "./components/MemoryGame";
 
 function App() {
-    return <h1 className="bg-red-500">Memory Game</h1>;
+    return <MemoryGame />;
 }
 
 export default App;
