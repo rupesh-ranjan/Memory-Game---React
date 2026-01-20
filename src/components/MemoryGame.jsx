@@ -52,8 +52,12 @@ function MemoryGame() {
     }
 
     function handleBoardSize(e) {
+        if (e.target.value === "") {
+            setBoardSize("");
+            return;
+        }
+
         let size = e.target.value > 10 ? 10 : e.target.value;
-        size = e.target.value < 2 ? 2 : e.target.value;
         setBoardSize(size);
         initializeGame(size);
     }
@@ -67,7 +71,8 @@ function MemoryGame() {
         if (
             cards.length > 0 &&
             solvedCards.length > 0 &&
-            solvedCards.length === cards.length
+            solvedCards.length === cards.length &&
+            cards[0].id !== "empty"
         ) {
             setWon(true);
         }
@@ -80,8 +85,8 @@ function MemoryGame() {
                 <label className="mr-4">Board size (2-10)</label>
                 <input
                     type="number"
-                    min={2}
-                    max={10}
+                    min="2"
+                    max="10"
                     value={boardSize}
                     onChange={handleBoardSize}
                     className="border-2 px-2"
@@ -89,36 +94,39 @@ function MemoryGame() {
             </div>
 
             {/* Cards */}
-            <div
-                className="grid gap-2"
-                style={{
-                    gridTemplateColumns: `repeat(${boardSize}, minmax(0, 1fr))`,
-                    width: `min(100%, ${boardSize * 5.5}re)`,
-                }}
-            >
-                {cards.map((card) => {
-                    const isOpen =
-                        solvedCards.includes(card?.id) ||
-                        flippedCardId === card?.id ||
-                        card.id === "empty";
-                    return (
-                        <div
-                            key={card.id}
-                            className={`p-8 rounded-lg text-white text-2xl hover:cursor-grab 
+            {boardSize >= 2 && (
+                <>
+                    <div
+                        className="grid gap-2"
+                        style={{
+                            gridTemplateColumns: `repeat(${boardSize}, minmax(0, 1fr))`,
+                            width: `min(100%, ${boardSize * 5.5}re)`,
+                        }}
+                    >
+                        {cards.map((card) => {
+                            const isOpen =
+                                solvedCards.includes(card?.id) ||
+                                flippedCardId === card?.id ||
+                                card.id === "empty";
+                            return (
+                                <div
+                                    key={card.id}
+                                    className={`p-8 rounded-lg text-white text-2xl hover:cursor-grab 
                                 ${isOpen ? "bg-green-600" : "bg-red-600"}
                                 `}
-                            onClick={() => handleCardClick(card?.id)}
-                        >
-                            {isOpen ? card?.number : "?"}
-                        </div>
-                    );
-                })}
-            </div>
-
-            {/* Won */}
-            <p className="text-3xl text-green-600 animate-bounce">
-                {won && "You won!"}
-            </p>
+                                    onClick={() => handleCardClick(card?.id)}
+                                >
+                                    {isOpen ? card?.number : "?"}
+                                </div>
+                            );
+                        })}
+                    </div>
+                    {/* Won */}
+                    <p className="text-3xl text-green-600 animate-bounce">
+                        {won && "You won!"}
+                    </p>
+                </>
+            )}
 
             {/* Reset */}
             <button
