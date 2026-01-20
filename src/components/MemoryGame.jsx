@@ -21,7 +21,7 @@ function MemoryGame() {
 
         setCards([
             ...shuffledCards.slice(0, shuffledCards.length / 2),
-            ...(totalCards % 2 !== 0 ? [null] : []),
+            ...(totalCards % 2 !== 0 ? [{ id: null, number: null }] : []),
             ...shuffledCards.slice(shuffledCards.length / 2),
         ]);
         setFlippedCardId(null);
@@ -42,18 +42,13 @@ function MemoryGame() {
         if (!solvedCards.includes(cardId)) {
             if (currentCardaValue !== flippedCardaValue) {
                 // first card
-                console.log("In if");
                 setFlippedCardId(cardId);
             } else {
                 // second card
-                console.log("In else");
                 setSolvedCards([...solvedCards, flippedCardId, cardId]);
                 setFlippedCardId(null);
             }
         }
-        console.log("Flipped card", flippedCardId);
-        console.log("Solved card ", solvedCards);
-        console.log("Cards ", cards);
     }
 
     function handleBoardSize(e) {
@@ -105,11 +100,11 @@ function MemoryGame() {
                     // console.log(card.id, isOpen);
                     return (
                         <div
-                            key={card?.id}
+                            key={card.id}
                             className={` p-6 rounded-lg text-white text-2xl hover:cursor-grab 
                                 ${isOpen ? "bg-green-600" : "bg-red-600"}
                                 `}
-                            onClick={() => handleCardClick(card.id)}
+                            onClick={() => handleCardClick(card?.id)}
                         >
                             {isOpen ? card?.number : "?"}
                         </div>
