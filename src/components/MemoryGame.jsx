@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 
 function MemoryGame() {
     const [cards, setCards] = useState([]);
-    const [boardSize, setBoardSize] = useState(3);
+    const [boardSize, setBoardSize] = useState(4);
     const [flippedCardId, setFlippedCardId] = useState(null);
     const [solvedCards, setSolvedCards] = useState([]);
     const [won, setWon] = useState(false);
 
-    function initializeGame(boardSize) {
-        const totalCards = boardSize * boardSize; // 9
+    function initializeGame(size = boardSize) {
+        const totalCards = size * size; // 9
 
         const pairCount = Math.floor(totalCards / 2); // 4
         const numbers = [...Array(pairCount).keys()].map((n) => n + 1);
@@ -21,7 +21,7 @@ function MemoryGame() {
 
         setCards([
             ...shuffledCards.slice(0, shuffledCards.length / 2),
-            ...(totalCards % 2 !== 0 ? [{ id: null, number: null }] : []),
+            ...(totalCards % 2 !== 0 ? [{ id: "empty", number: null }] : []),
             ...shuffledCards.slice(shuffledCards.length / 2),
         ]);
         setFlippedCardId(null);
@@ -45,7 +45,7 @@ function MemoryGame() {
                 setFlippedCardId(cardId);
             } else {
                 // second card
-                setSolvedCards([...solvedCards, flippedCardId, cardId]);
+                setSolvedCards((prev) => [...prev, flippedCardId, cardId]);
                 setFlippedCardId(null);
             }
         }
@@ -55,15 +55,21 @@ function MemoryGame() {
         let size = e.target.value > 10 ? 10 : e.target.value;
         size = e.target.value < 2 ? 2 : e.target.value;
         setBoardSize(size);
+        initializeGame(size);
     }
 
     useEffect(() => {
         initializeGame(boardSize);
-    }, [boardSize]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
-        if (cards.length > 0 && solvedCards.length > 0) {
-            if (solvedCards.length === cards.length) setWon(true);
+        if (
+            cards.length > 0 &&
+            solvedCards.length > 0 &&
+            solvedCards.length === cards.length
+        ) {
+            setWon(true);
         }
     }, [solvedCards, cards]);
 
@@ -71,9 +77,7 @@ function MemoryGame() {
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 gap-8">
             {/* Size */}
             <div className="text-3xl mr-4">
-                <label className="mr-4">
-                    Enter the board size (min:2. max:10 )
-                </label>
+                <label className="mr-4">Board size (2-10)</label>
                 <input
                     type="number"
                     min={2}
@@ -96,12 +100,11 @@ function MemoryGame() {
                     const isOpen =
                         solvedCards.includes(card?.id) ||
                         flippedCardId === card?.id ||
-                        card === null;
-                    // console.log(card.id, isOpen);
+                        card.id === "empty";
                     return (
                         <div
                             key={card.id}
-                            className={` p-6 rounded-lg text-white text-2xl hover:cursor-grab 
+                            className={`p-8 rounded-lg text-white text-2xl hover:cursor-grab 
                                 ${isOpen ? "bg-green-600" : "bg-red-600"}
                                 `}
                             onClick={() => handleCardClick(card?.id)}
